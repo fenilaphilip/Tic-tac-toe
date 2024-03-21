@@ -7,15 +7,15 @@ const initialGameBoard = [
     [null, null, null]
 ];
 
-export default function GameBoard() {
+export default function GameBoard({ currentPlayer, currentPlayerSymbol }) {
     const [gameBoard, setGameBoard] = useState(initialGameBoard);
     function handleClickedSquare(rowIndex, colIndex) {
         setGameBoard(preGameBoard => {
             const updateGameBoard = [...preGameBoard.map(innerArray => [...innerArray])]
-            updateGameBoard[rowIndex][colIndex] = "X";
+            updateGameBoard[rowIndex][colIndex] = currentPlayerSymbol;
             return updateGameBoard;
         })
-
+        currentPlayer();
     }
     return (
         <ol id="game-board">
