@@ -27,7 +27,12 @@ function App() {
 
   const activePlayer = showActivePlayer(gameTurns);
 
-  let gameBoard = initialGameBoard;
+  function handleRematch() {
+    setGameTurns([]);
+    console.log("rematch executing");
+  }
+
+  let gameBoard = [...initialGameBoard.map(array => [...array])];
   for (const turn of gameTurns) {
     const { square, player } = turn;
     const { row, col } = square;
@@ -69,7 +74,7 @@ function App() {
           <Player name="Player 1" symbol="X" isPlayerActive={activePlayer === "X"} />
           <Player name="Player 2" symbol="O" isPlayerActive={activePlayer === "O"} />
         </ol>
-        {(winner || gameDraw) && <GameOver winner={winner} />}
+        {(winner || gameDraw) && <GameOver winner={winner} rematch={handleRematch} />}
         <GameBoard currentPlayer={displayCurrentPlayer} gameBoard={gameBoard} />
       </div>
       <Log turns={gameTurns} />
