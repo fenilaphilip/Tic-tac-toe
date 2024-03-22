@@ -23,6 +23,10 @@ function showActivePlayer(gameTurns) {
 
 
 function App() {
+  const [players, setplayers] = useState({
+    x: "Player 1",
+    O: "Player 2"
+  });
   const [gameTurns, setGameTurns] = useState([]);
 
   const activePlayer = showActivePlayer(gameTurns);
@@ -30,6 +34,15 @@ function App() {
   function handleRematch() {
     setGameTurns([]);
     console.log("rematch executing");
+  }
+
+  function handlePlayerNameChange(symbol, newName) {
+    setplayers(preValue => {
+      return {
+        ...preValue,
+        [symbol]: newName
+      }
+    })
   }
 
   let gameBoard = [...initialGameBoard.map(array => [...array])];
@@ -51,7 +64,7 @@ function App() {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = players[firstSquareSymbol];
     }
   }
 
@@ -71,11 +84,29 @@ function App() {
     <main>
       <div id="game-container">
         <ol id="players" className="highlight-player">
-          <Player name="Player 1" symbol="X" isPlayerActive={activePlayer === "X"} />
-          <Player name="Player 2" symbol="O" isPlayerActive={activePlayer === "O"} />
+          <Player
+            name="Player 1"
+            symbol="X"
+            isPlayerActive={activePlayer === "X"}
+            onChangePlayerName={handlePlayerNameChange}
+          />
+          <Player
+            name="Player 2"
+            symbol="O"
+            isPlayerActive={activePlayer === "O"}
+            onChangePlayerName={handlePlayerNameChange}
+          />
         </ol>
-        {(winner || gameDraw) && <GameOver winner={winner} rematch={handleRematch} />}
-        <GameBoard currentPlayer={displayCurrentPlayer} gameBoard={gameBoard} />
+        {(winner || gameDraw) &&
+          <GameOver
+            winner={winner}
+            rematch={handleRematch}
+          />}
+        <GameBoard
+          currentPlayer={displayCurrentPlayer}
+          gameBoard={gameBoard}
+
+        />
       </div>
       <Log turns={gameTurns} />
     </main>

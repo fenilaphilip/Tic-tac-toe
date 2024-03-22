@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 
-export default function Player({ name, symbol, isPlayerActive }) {
+export default function Player({ name, symbol, isPlayerActive, onChangePlayerName }) {
     const [playerCalled, setPlayerCalled] = useState(name);
     const [isEditing, setIsEditing] = useState(false);
 
@@ -10,6 +10,9 @@ export default function Player({ name, symbol, isPlayerActive }) {
         setIsEditing(preValue => {
             return !preValue;
         });
+        if (isEditing) {
+            onChangePlayerName(symbol, playerCalled);
+        }
     }
 
     function handleChange(event) {
