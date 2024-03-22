@@ -1,18 +1,5 @@
 
-const initialGameBoard = [
-    [null, null, null],
-    [null, null, null],
-    [null, null, null]
-];
-
-export default function GameBoard({ currentPlayer, turns }) {
-
-    let gameBoard = initialGameBoard;
-    for (const turn of turns) {
-        const { square, player } = turn;
-        const { row, col } = square;
-        gameBoard[row][col] = player;
-    }
+export default function GameBoard({ currentPlayer, gameBoard }) {
 
     return (
         <ol id="game-board">

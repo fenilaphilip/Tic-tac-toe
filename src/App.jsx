@@ -3,6 +3,14 @@ import { useState } from "react";
 import Player from "./Components/Player";
 import GameBoard from "./Components/GameBoard";
 import Log from "./Components/Log";
+import GameOver from "./Components/GameOver";
+import { WINNING_PATTERNS } from "./WinningPattern";
+
+const initialGameBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null]
+];
 
 
 function showActivePlayer(gameTurns) {
@@ -18,6 +26,28 @@ function App() {
   const [gameTurns, setGameTurns] = useState([]);
 
   const activePlayer = showActivePlayer(gameTurns);
+
+  let gameBoard = initialGameBoard;
+  for (const turn of gameTurns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+    gameBoard[row][col] = player;
+  }
+
+  let winner;
+  for (const combination of WINNING_PATTERNS) {
+    const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column];
+    const secondSquareSymbol = gameBoard[combination[1].row][combination[1].column];
+    const thirdSquareSymbol = gameBoard[combination[2].row][combination[2].column];
+
+    if (
+      firstSquareSymbol &&
+      firstSquareSymbol === secondSquareSymbol &&
+      firstSquareSymbol === thirdSquareSymbol
+    ) {
+      winner = firstSquareSymbol;
+    }
+  }
 
   function displayCurrentPlayer(rowIndex, colIndex) {
     setGameTurns(prevTurns => {
@@ -36,7 +66,8 @@ function App() {
           <Player name="Player 1" symbol="X" isPlayerActive={activePlayer === "X"} />
           <Player name="Player 2" symbol="O" isPlayerActive={activePlayer === "O"} />
         </ol>
-        <GameBoard currentPlayer={displayCurrentPlayer} turns={gameTurns} />
+        {winner && <GameOver winner={winner} />}
+        <GameBoard currentPlayer={displayCurrentPlayer} gameBoard={gameBoard} />
       </div>
       <Log turns={gameTurns} />
     </main>
