@@ -5,21 +5,25 @@ import GameBoard from "./Components/GameBoard";
 import Log from "./Components/Log";
 
 
+function showActivePlayer(gameTurns) {
+  let nowplayerIs = "X";
+  if (gameTurns.length > 0 && gameTurns[0].player === "X") {
+    nowplayerIs = "O";
+  }
+  return nowplayerIs;
+}
+
+
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
-  const [activePlayer, setActivePlayer] = useState("X");
+
+  const activePlayer = showActivePlayer(gameTurns);
 
   function displayCurrentPlayer(rowIndex, colIndex) {
-    setActivePlayer(preActivePlayer => {
-      return (preActivePlayer === "X" ? "O" : "X");
-    });
     setGameTurns(prevTurns => {
-      let nowplayerIs = "X";
-      if (prevTurns.length > 0 && prevTurns[0].player === "X") {
-        nowplayerIs = "O";
-      }
+      const currentPlayerIs = showActivePlayer(prevTurns);
       const updatedTurns = [
-        { square: { row: rowIndex, col: colIndex }, player: nowplayerIs },
+        { square: { row: rowIndex, col: colIndex }, player: currentPlayerIs },
         ...prevTurns];
       return updatedTurns;
     });
