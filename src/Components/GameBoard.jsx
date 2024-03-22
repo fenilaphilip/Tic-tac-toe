@@ -23,7 +23,9 @@ export default function GameBoard({ currentPlayer, turns }) {
                             {row.map((playerSymbol, colIndex) => {
                                 return (
                                     <li key={colIndex}>
-                                        <button onClick={() => currentPlayer(rowIndex, colIndex)}>{playerSymbol}</button>
+                                        <button onClick={() => currentPlayer(rowIndex, colIndex)} disabled={playerSymbol !== null}>
+                                            {playerSymbol}
+                                        </button>
                                     </li>
                                 );
                             })}
