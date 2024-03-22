@@ -35,6 +35,7 @@ function App() {
   }
 
   let winner;
+
   for (const combination of WINNING_PATTERNS) {
     const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column];
     const secondSquareSymbol = gameBoard[combination[1].row][combination[1].column];
@@ -48,6 +49,8 @@ function App() {
       winner = firstSquareSymbol;
     }
   }
+
+  const gameDraw = gameTurns.length === 9 && !winner;
 
   function displayCurrentPlayer(rowIndex, colIndex) {
     setGameTurns(prevTurns => {
@@ -66,7 +69,7 @@ function App() {
           <Player name="Player 1" symbol="X" isPlayerActive={activePlayer === "X"} />
           <Player name="Player 2" symbol="O" isPlayerActive={activePlayer === "O"} />
         </ol>
-        {winner && <GameOver winner={winner} />}
+        {(winner || gameDraw) && <GameOver winner={winner} />}
         <GameBoard currentPlayer={displayCurrentPlayer} gameBoard={gameBoard} />
       </div>
       <Log turns={gameTurns} />
